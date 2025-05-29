@@ -104,18 +104,28 @@ app.get("/api/v1/content", userMiddleware, async (req, res) => {
   });
 });
 
-app.delete("/api/v1/content", userMiddleware, async (req, res) => {
-  const contentId = req.body.contentId;
+app.delete("/api/v1/content/:id", userMiddleware, async (req, res) => {
+  const contentId = req.params.id;
 
-  await ContentModel.deleteMany({
-    contentId,
-    userId: req.userId,
-  });
+  try {
+    const result = await ContentModel.deleteOne({
+      _id: contentId,
+      userId: req.userId,
+    });
 
-  res.json({
-    message: "Deleted",
-  });
+    if (result.deletedCount === 0) {
+      res.status(404).json({ message: "Content not found" }); // ❌ don't use `return`
+      return;
+    }
+
+    res.json({ message: "Deleted" });
+  } catch (error) {
+    console.error("Delete failed", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
 });
+
+
 
 app.post("/api/v1/brain/share", userMiddleware, async (req, res) => {
   const { share } = req.body;

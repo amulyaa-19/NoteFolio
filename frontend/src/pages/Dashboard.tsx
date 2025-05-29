@@ -17,6 +17,21 @@ export function Dashboard() {
     refresh();
   }, [modalOpen]);
 
+  const handleDelete = async (id: string) => {
+  try {
+    await axios.delete(`${BACKEND_URL}/api/v1/content/${id}`, {
+      headers: {
+        Authorization: localStorage.getItem("token"),
+      },
+    });
+
+    refresh(); // refresh UI after delete
+  } catch (err) {
+    console.error("Failed to delete content", err);
+  }
+};
+
+
   return (
     <div>
       <SideBar />
@@ -59,8 +74,8 @@ export function Dashboard() {
         </div>
 
         <div className="flex gap-4 flex-wrap">
-          {contents.map(({ type, link, title }) => (
-            <Card type={type} link={link} title={title} />
+          {contents.map(({_id ,type, link, title }) => (
+            <Card key={_id} type={type} link={link} title={title} onDelete={() => handleDelete(_id)} />
           ))}
         </div>
       </div>

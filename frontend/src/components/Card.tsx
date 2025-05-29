@@ -1,14 +1,44 @@
-import { ShareIcon } from "../icons/ShareIcon";
+import { useEffect, useRef } from "react";
 import { BookOpen } from "../icons/BookOpen";
 import { DeleteIcon } from "../icons/DeleteIcon";
+import { ArrowIcon } from "../icons/ArrowIcon";
 
 interface CardProps {
   title: string;
   link: string;
   type: "twitter" | "youtube";
+  onDelete: () => void;
 }
 
-export function Card({ title, link, type }: CardProps) {
+// TwitterEmbed component to load and render Twitter widgets dynamically
+function TwitterEmbed({ url }: { url: string }) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    // Load Twitter widget script only once
+    if (!window.twttr) {
+      const script = document.createElement("script");
+      script.src = "https://platform.twitter.com/widgets.js";
+      script.async = true;
+      document.body.appendChild(script);
+      script.onload = () => {
+        window.twttr?.widgets.load(containerRef.current);
+      };
+    } else {
+      window.twttr?.widgets.load(containerRef.current);
+    }
+  }, [url]);
+
+  return (
+    <div ref={containerRef}>
+      <blockquote className="twitter-tweet">
+        <a href={url.replace("x.com", "twitter.com")}></a>
+      </blockquote>
+    </div>
+  );
+}
+
+export function Card({ title, link, type, onDelete }: CardProps) {
   return (
     <div>
       <div className="p-4 bg-white rounded-md border-gray max-w-72 border min-h-42 min-w-72">
@@ -21,11 +51,11 @@ export function Card({ title, link, type }: CardProps) {
           </div>
           <div className="flex items-center">
             <div className="pr-2 pl-4 text-gray-500">
-              <a href={link} target="_blank">
-                <ShareIcon />
+              <a href={link} target="_blank" rel="noreferrer">
+                <ArrowIcon />
               </a>
             </div>
-            <div className="text-gray-500 pl-4">
+            <div className="text-gray-500 pl-4 cursor-pointer" onClick={onDelete}>
               <DeleteIcon />
             </div>
           </div>
@@ -43,11 +73,7 @@ export function Card({ title, link, type }: CardProps) {
             ></iframe>
           )}
 
-          {type === "twitter" && (
-            <blockquote className="twitter--tweet">
-              <a href={link.replace("x.com", "twitter.com")}></a>
-            </blockquote>
-          )}
+          {type === "twitter" && <TwitterEmbed url={link} />}
         </div>
       </div>
     </div>
