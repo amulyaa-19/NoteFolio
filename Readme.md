@@ -7,13 +7,13 @@
 ## 🛠️ Tech Stack
 
 **Frontend:**
-- React.js
+- React(with Typescript)
 - Tailwind CSS
 - React Router DOM
 
 **Backend:**
-- Node.js
-- Express.js
+- Node
+- Express
 - MongoDB
 - Mongoose
 - JWT (JSON Web Token) for authentication

@@ -11,7 +11,7 @@ interface ButtonProps {
 
 const variantClasses = {
   primary: "bg-purple-600 text-white cursor-pointer",
-  secondary: "bg-purple-200 text-purple-600 cursor-pointer",
+  secondary: "bg-purple-300 text-black cursor-pointer",
 };
 
 const defaultStyles = "px-4 py-2 rounded-md font-light flex items-center";

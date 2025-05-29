@@ -1,4 +1,6 @@
 import { ShareIcon } from "../icons/ShareIcon";
+import { BookOpen } from "../icons/BookOpen";
+import { DeleteIcon } from "../icons/DeleteIcon";
 
 interface CardProps {
   title: string;
@@ -13,18 +15,18 @@ export function Card({ title, link, type }: CardProps) {
         <div className="flex justify-center">
           <div className="flex items-center text-md">
             <div className="text-gray-500 pr-2">
-              <ShareIcon />
+              <BookOpen />
             </div>
             {title}
           </div>
           <div className="flex items-center">
-            <div className="pr-2 text-gray-500">
+            <div className="pr-2 pl-4 text-gray-500">
               <a href={link} target="_blank">
                 <ShareIcon />
               </a>
             </div>
-            <div className="text-gray-500">
-              <ShareIcon />
+            <div className="text-gray-500 pl-4">
+              <DeleteIcon />
             </div>
           </div>
         </div>
